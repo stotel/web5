@@ -202,7 +202,7 @@ button:hover{
     box-sizing: border-box;
     width: 20%;
     height: 100vh;
-    overflow: auto;
+    overflow: scroll;
 }
 
 .pizza-name,
@@ -584,9 +584,10 @@ header span {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    position: absolute;
+    width: 20%;
+    position: fixed;
     bottom: 0;
+    z-index: 1000;
 }
 
 .block-header {
@@ -650,6 +651,10 @@ margin-right: 10px;
 }
 
 .sidebar {
+    width: 50%;
+}
+
+.block-container{
     width: 50%;
 }
 

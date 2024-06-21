@@ -193,12 +193,31 @@ function loadSidebarFromLocalStorage() {
 
 // Call the function to load the sidebar content
 loadSidebarFromLocalStorage();
+// Function to extract numbers from a string
+function extractNumbers(inputString) {
+    // Use a regular expression to match all digits in the string
+    let matches = inputString.match(/\d+/g);
+    
+    // If there are matches, convert them to numbers, otherwise return an empty array
+    return matches ? matches.map(Number) : [];
+}
 
 
 
 
 function saveSidebarToLocalStorage() {
+    //console.warn("aaaaaaa");
     const sidebar = document.getElementById('sidebar');
+    buyElements = sidebar.querySelectorAll(".row3");
+    pricetag = sidebar.querySelector(".header-right");
+    quantity = sidebar.querySelector(".quantity");
+    pricetag.textContent = 0;
+    quantity.textContent = 0;
+    buyElements.forEach(b=>{
+        pricetag.textContent = parseInt(pricetag.textContent)+(parseInt(extractNumbers(b.querySelector(".price").textContent))*parseInt(b.querySelector(".number").textContent));
+        quantity.textContent = parseInt(quantity.textContent)+parseInt(b.querySelector(".number").textContent);
+    });
+    pricetag.textContent = pricetag.textContent+"грн";
     localStorage.setItem('sidebar', sidebar.innerHTML);
 }
 
@@ -520,16 +539,24 @@ pizza_info.forEach(pizza => {
 
 const filterButtons = document.querySelectorAll('.select-button');
 filterButtons.forEach(filterButton => {
-    a = document.querySelector(".selector");
-    if(a){
-        a.classList.remove("selector");
-        a.classList.add("deselect");
-    }
+
     filterButton.addEventListener("click",()=>{
         if(filterButton.classList.contains("deselect")){
+            a = document.querySelector(".selector");
+            a.classList.remove("selector");
+            a.classList.add("deselect");
             filterButton.classList.remove("deselect");
             filterButton.classList.add("selector");
             filterPizza(filterButton.id,pizza_info);
+            document.querySelector(".all-pizza-font").textContent = filterButton.textContent;
+            a = 0;
+            const pizzas = document.querySelectorAll('.pizza-container');
+                pizzas.forEach(pizza => {
+                if(pizza.style.display=="block"){
+                    a++;
+                }
+            });
+            document.getElementById("variant-count").textContent=a;
         }
     });
 });
