@@ -1,0 +1,19 @@
+body{
+    background-color: orange;
+    display: flex;
+    justify-content: center;
+}
+
+.table{
+    size: 80%;
+    /* margin: 10%; */
+}
+footer{
+    display: flex;
+    position: fixed;
+    bottom: -30%;
+}
+img{
+    size:10px;
+    overflow: visible;
+}

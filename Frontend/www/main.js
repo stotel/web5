@@ -170,35 +170,26 @@ var pizza_info = [
     }
 ];
 
-function loadSidebarFromLocalStorage() {
-    // Retrieve the sidebar content from local storage
-    const sidebarContent = localStorage.getItem('sidebarContent');
+// function loadSidebarFromLocalStorage() {
+//     const sidebarContent = localStorage.getItem('sidebarContent');
 
-    // Check if there's any content stored
-    if (sidebarContent) {
-        // Find the element with class "sidebar"
-        const sidebarElement = document.querySelector('.sidebar');
+//     if (sidebarContent) {
+//         const sidebarElement = document.querySelector('.sidebar');
         
-        // Check if the sidebar element exists on the page
-        if (sidebarElement) {
-            // Set the inner HTML of the sidebar element to the stored content
-            sidebarElement.innerHTML = sidebarContent;
-        } else {
-            console.error('No element with class "sidebar" found.');
-        }
-    } else {
-        console.warn('No sidebar content found in local storage.');
-    }
-}
+//         if (sidebarElement) {
+//             sidebarElement.innerHTML = sidebarContent;
+//         } else {
+//             console.error('No element with class "sidebar" found.');
+//         }
+//     } else {
+//         console.warn('No sidebar content found in local storage.');
+//     }
+// }
 
-// Call the function to load the sidebar content
 loadSidebarFromLocalStorage();
-// Function to extract numbers from a string
 function extractNumbers(inputString) {
-    // Use a regular expression to match all digits in the string
     let matches = inputString.match(/\d+/g);
     
-    // If there are matches, convert them to numbers, otherwise return an empty array
     return matches ? matches.map(Number) : [];
 }
 
@@ -206,7 +197,6 @@ function extractNumbers(inputString) {
 
 
 function saveSidebarToLocalStorage() {
-    //console.warn("aaaaaaa");
     const sidebar = document.getElementById('sidebar');
     buyElements = sidebar.querySelectorAll(".row3");
     pricetag = sidebar.querySelector(".header-right");
@@ -221,13 +211,11 @@ function saveSidebarToLocalStorage() {
     localStorage.setItem('sidebar', sidebar.innerHTML);
 }
 
-// Function to load sidebar state from local storage
 function loadSidebarFromLocalStorage() {
     const sidebar = document.getElementById('sidebar');
     const sidebarContent = localStorage.getItem('sidebar');
     if (sidebarContent) {
         sidebar.innerHTML = sidebarContent;
-        // Add event listeners for buttons (plus, minus, delete) in loaded items
         const gridContainers = sidebar.querySelectorAll(".grid-container");
         gridContainers.forEach(gridContainer => {
             const plusButtons = gridContainer.querySelectorAll('.plus-button');
@@ -263,40 +251,33 @@ function loadSidebarFromLocalStorage() {
     }
 }
 
-// JavaScript function to create a pizza container from the pizza_info array
 function createPizzaContainer(pizza) {
-    // Create the main container section
     const pizzaContainer = document.createElement('section');
     pizzaContainer.className = 'pizza-container';
     pizzaContainer.id = pizza.id;
 
-    // Add new badge if the pizza is new
     if (pizza.is_new) {
         const newBadge = document.createElement('div');
         newBadge.className = 'new-badge';
-        newBadge.textContent = 'Новинка'; // Assuming 'Новинка' means 'New' in Ukrainian
+        newBadge.textContent = 'Новинка';
         pizzaContainer.appendChild(newBadge);
     }
 
-    // Add the pizza image
     const pizzaImage = document.createElement('div');
     pizzaImage.className = 'pizza-image';
     pizzaImage.style.backgroundImage = `url('${pizza.icon}')`;
     pizzaContainer.appendChild(pizzaImage);
 
-    // Add the pizza name
     const pizzaName = document.createElement('div');
     pizzaName.className = 'pizza-name';
     pizzaName.textContent = pizza.title;
     pizzaContainer.appendChild(pizzaName);
 
-    // Add the pizza type
     const pizzaType = document.createElement('div');
     pizzaType.className = 'pizza-type';
     pizzaType.textContent = pizza.type;
     pizzaContainer.appendChild(pizzaType);
 
-    // Add the pizza description
     const pizzaDescription = document.createElement('div');
     pizzaDescription.className = 'pizza-description';
     const meat = pizza.content?.meat ?? [];
@@ -314,11 +295,9 @@ function createPizzaContainer(pizza) {
     ].join(', ');
     pizzaContainer.appendChild(pizzaDescription);
 
-    // Create the pizza details section
     const pizzaDetails = document.createElement('section');
     pizzaDetails.className = 'pizza-details';
 
-    // Helper function to create detail rows
     const createDetailRow = (label, value) => {
         const detailRow = document.createElement('div');
         detailRow.className = 'detail-row';
@@ -342,7 +321,6 @@ function createPizzaContainer(pizza) {
         return detailRow;
     };
 
-    // Add details for small size
     if(pizza.small_size){
         const smallSizeDetails = document.createElement('div');
         smallSizeDetails.appendChild(createDetailRow('∅', pizza.small_size.size));
@@ -359,7 +337,6 @@ function createPizzaContainer(pizza) {
         pizzaDetails.appendChild(smallSizeDetails);
     }
 
-    // Add details for big size
     if(pizza.big_size){
         const bigSizeDetails = document.createElement('div');
         bigSizeDetails.appendChild(createDetailRow('∅', pizza.big_size.size));
@@ -382,7 +359,6 @@ function createPizzaContainer(pizza) {
 }
 
 function filterPizza(category,pizzaList){
-    //print("aaa");
     const pizzas = document.querySelectorAll(".pizza-container");
     pizzas.forEach(pizza => {
         pizza.style.display = "none";
@@ -423,41 +399,28 @@ function filterPizza(category,pizzaList){
     });
 }
 
-// Function to add a pizza to the sidebar
 function addPizzaToSidebar(pizza, size) {
-    // Determine size details
     const sizeDetails = size === 'small' ? pizza.small_size : pizza.big_size;
     const sizeText = size === 'small' ? 'Мала' : 'Велика';
     const pizzaIdentifier = `${pizza.title} (${sizeText})`;
-
-    // Check if the pizza is already in the sidebar
     const sidebar = document.getElementById('sidebar');
     const existingPizzas = sidebar.getElementsByClassName('grid-container');
     for (let existingPizza of existingPizzas) {
         const row1 = existingPizza.querySelector('.row1');
         if (row1 && row1.textContent === pizzaIdentifier) {
-            // Increment the quantity
             const numberElement = existingPizza.querySelector('.number');
             numberElement.textContent = parseInt(numberElement.textContent) + 1;
             return;
         }
     }
-
-    // Create the grid container
     const gridContainer = document.createElement('section');
     gridContainer.className = 'grid-container';
-
-    // Create the column-1 div
     const column1 = document.createElement('div');
     column1.className = 'column-1';
-
-    // Add the pizza name and size
     const row1 = document.createElement('div');
     row1.className = 'row1 orange-font1';
     row1.textContent = pizzaIdentifier;
     column1.appendChild(row1);
-
-    // Add the size and weight
     const row2 = document.createElement('div');
     row2.className = 'row2';
     const detailRowGrid1 = document.createElement('div');
@@ -470,8 +433,6 @@ function addPizzaToSidebar(pizza, size) {
     row2.appendChild(detailRowGrid1);
     row2.appendChild(detailRowGrid2);
     column1.appendChild(row2);
-
-    // Add the price and buttons
     const row3 = document.createElement('div');
     row3.className = 'row3';
     const price = document.createElement('div');
@@ -494,7 +455,7 @@ function addPizzaToSidebar(pizza, size) {
     row3.appendChild(minusButton);
     const number = document.createElement('div');
     number.className = 'number';
-    number.textContent = '1'; // Default quantity to 1
+    number.textContent = '1';
     row3.appendChild(number);
     const plusButton = document.createElement('button');
     plusButton.className = 'plus-button';
@@ -516,21 +477,16 @@ function addPizzaToSidebar(pizza, size) {
     row3.appendChild(gradientButton);
     column1.appendChild(row3);
 
-    // Add column-1 to the grid container
     gridContainer.appendChild(column1);
 
-    // Add the pizza image
     const columnImg = document.createElement('img');
     columnImg.className = 'column-img';
     columnImg.src = pizza.icon;
     gridContainer.appendChild(columnImg);
-
-    // Append the grid container to the sidebar
     sidebar.appendChild(gridContainer);
     saveSidebarToLocalStorage();
 }
 
-// Append the pizza container to a parent element (assuming there's a parent element with id 'pizza-list')
 const pizzaList = document.getElementById('pizza-list');
 pizza_info.forEach(pizza => {
     const pizzaContainer = createPizzaContainer(pizza);
@@ -568,3 +524,41 @@ clear_list.addEventListener("click",()=>{
     buyElements.forEach(b=>b.remove());
     saveSidebarToLocalStorage();
 });
+
+document.getElementById("toBonus").addEventListener("click", function() {
+    saveSidebarDataToLocalStorage();
+    window.location.href = "bonus.html";
+});
+
+function saveSidebarDataToLocalStorage() {
+    const sidebar = document.getElementById('sidebar');
+    const existingPizzas = sidebar.getElementsByClassName('grid-container');
+    const pizzasData = [];
+
+    for (let existingPizza of existingPizzas) {
+        const pizzaData = {};
+        const row1 = existingPizza.querySelector('.row1');
+        if (row1) {
+            pizzaData.identifier = row1.textContent.trim();
+        }
+        const numberElement = existingPizza.querySelector('.number');
+        if (numberElement) {
+            pizzaData.quantity = parseInt(numberElement.textContent);
+        }
+        const detailRows = existingPizza.querySelectorAll('.detail-row-grid');
+        if (detailRows.length === 2) {
+            pizzaData.size = detailRows[0].querySelector('.detail-value-small').textContent.trim();
+            pizzaData.weight = detailRows[1].querySelector('.detail-value-small').textContent.trim();
+        }
+        const priceElement =  extractNumbers(existingPizza.querySelector('.price').textContent.trim());
+        if (priceElement) {
+            pizzaData.price = parseInt(priceElement);
+        }
+        const columnImg = existingPizza.querySelector('.column-img');
+        if (columnImg) {
+            pizzaData.icon = columnImg.src;
+        }
+        pizzasData.push(pizzaData);
+    }
+    localStorage.setItem('sidebarPizzas', JSON.stringify(pizzasData));
+}

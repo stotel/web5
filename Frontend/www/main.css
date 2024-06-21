@@ -557,7 +557,7 @@ header span {
 }
 
 .new-badge::after {
-    content: "Нова";
+    
 }
 
 .popular-badge {
@@ -573,7 +573,7 @@ header span {
     }
 
 .popular-badge::after {
-    content: "Популярна";
+    
 }
 
 .block-container {
